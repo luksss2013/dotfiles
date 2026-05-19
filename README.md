@@ -16,18 +16,18 @@ What's in this setup?
 
 - Host: Windows 10 2004+
   - Ubuntu via WSL 2 (Windows Subsystem for Linux)
-- Terminal: Windows Terminal
+- Terminal
+  - Windows: Windows Terminal, with light and dark themes
+  - macOS: Ghostty
 - Systemd
 - zsh
 - git
 - Docker
 - Docker Compose
-- Node.js (using [Volta](https://volta.sh))
+- Vite+
   - node
-  - npm
-  - yarn
+  - pnpm
 - Go
-- IDE: IntelliJ IDEA, under WSL 2, used on Windows via VcXsrv
 - WSL Bridge: allow exposing WSL 2 ports on the network
 
 
@@ -96,10 +96,10 @@ If you already have a GPG key, restore it. If you did not have one, you can crea
 
 ### Restore
 
-- On old system, create a backup of a GPG key
+- On the old system, create a backup of a GPG key
   - `gpg --list-secret-keys`
   - `gpg --export-secret-keys {{KEY_ID}} > /tmp/private.key`
-- On new system, import the key:
+- On the new system, import the key:
   - `gpg --import /tmp/private.key`
 - Delete the `/tmp/private.key` on both side
 
@@ -161,9 +161,23 @@ Setup zsh
 mkdir -p ~/dev/dotfiles
 git clone git@github.com:Alex-D/dotfiles.git ~/dev/dotfiles
 
-# Install Antibody and generate .zsh_plugins.zsh
+# WSL: Install Antibody and generate .zsh_plugins.zsh
 curl -sfL git.io/antibody | sudo sh -s - -b /usr/local/bin
 antibody bundle < ~/dev/dotfiles/zsh_plugins > ~/.zsh_plugins.zsh
+
+# macOS: Install antidote and generate .zsh_plugins.zsh
+brew install antidote
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+antidote bundle < ~/dev/dotfiles/zsh_plugins > ~/.zsh_plugins.zsh
+
+# Install Starship
+# See: https://starship.rs/guide/#%F0%9F%9A%80-installation
+# WSL
+sudo apt install starship
+# macOs
+brew install starship
+# macOs: remove the "last login" line
+touch ~/.hushlogin
 
 # Link custom dotfiles
 ln -sf ~/dev/dotfiles/.ssh-config ~/.ssh/config
@@ -233,39 +247,67 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 
-Node.js
--------
+Vite+ (Node.js, pnpm, ...)
+--------------------------
 
 ```shell script
 #!/bin/zsh
 
-# Install Volta
-mkdir -p $VOLTA_HOME
-curl https://get.volta.sh | bash -s -- --skip-setup
-
-# Install node and package managers
-volta install node npm yarn
+# Install Vite+
+curl -fsSL https://vite.plus | bash
 ```
 
 
 Go
 ---
 
+[See official documentation](https://golang.org/doc/install)
+
+<details>
+<summary>WSL</summary>
+
 ```shell script
 #!/bin/zsh
 
-goVersion=1.16.4
+goVersion=1.26.3
 curl -L "https://golang.org/dl/go${goVersion}.linux-amd64.tar.gz" > /tmp/go${goVersion}.linux-amd64.tar.gz
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf /tmp/go${goVersion}.linux-amd64.tar.gz
 rm /tmp/go${goVersion}.linux-amd64.tar.gz
 ```
+</details>
 
-[See official documentation](https://golang.org/doc/install)
+<details>
+<summary>macOS</summary>
+
+```shell script
+brew install go
+```
+</details>
+
+
+Rust
+----
+
+<details>
+<summary>macOS</summary>
+
+```shell script
+brew install rustup
+rustup-init
+rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
+```
+</details>
 
 
 IntelliJ IDEA
 -------------
+
+I use to launch IntelliJ IDEA from WSL 2 using XLaunch.
+JetBrains improved a lot on that, so now I can run IntelliJ from Windows and work in WSL 2.
+
+<details>
+<summary>Old Setup to run IntelliJ IDEA inside WSL</summary>
 
 I run IntelliJ IDEA in WSL 2, and get its GUI on Windows via X Server (VcXsrv).
 
@@ -306,6 +348,8 @@ sudo chown $UID:$UID /opt/idea
 # Download IntelliJ IDEA
 curl -L "https://download.jetbrains.com/product?code=IIU&latest&distribution=linux" | tar vxz -C /opt/idea --strip 1
 ```
+
+</details>
 
 
 Setup Windows Terminal

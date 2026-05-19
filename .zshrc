@@ -8,8 +8,9 @@ function setup_aliases() {
 	[ -f ~/.aliases.zsh ] && source ~/.aliases.zsh
 }
 
-# All zsh plugins (Generated via Antibody)
+# All zsh plugins (Generated via Antidote)
 function setup_zsh_plugin() {
+	autoload -Uz compinit && compinit
 	ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 	[ -f ~/.zsh_plugins.zsh ] && source ~/.zsh_plugins.zsh
 }
