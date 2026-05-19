@@ -71,6 +71,8 @@ wsl --set-default-version 2
 Install common dependencies
 ---------------------------
 
+## Linux / WSL 2
+
 ```shell script
 #!/bin/bash
 
@@ -86,6 +88,19 @@ sudo apt update && sudo apt install -y \
     tree \
     zip unzip \
     zsh
+```
+
+## macOS
+
+```shell script
+# Install brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install dependencies
+brew install \
+	gnupg \
+	tig \
+	tree
 ```
 
 
@@ -176,6 +191,9 @@ antidote bundle < ~/dev/dotfiles/zsh_plugins > ~/.zsh_plugins.zsh
 sudo apt install starship
 # macOs
 brew install starship
+mkdir -p ~/.config
+ln -sf ~/dev/dotfiles/starship.toml ~/.config/starship.toml
+
 # macOs: remove the "last login" line
 touch ~/.hushlogin
 
@@ -206,6 +224,9 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 sudo apt update
 sudo apt install gh
+
+# macOS
+brew install gh
 ```
 
 Login gh command to GitHub via `gh auth login`
