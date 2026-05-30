@@ -1,5 +1,5 @@
 # Plugins
-rupa/z
+# rupa/z removed — replaced by zoxide in .zshrc
 robbyrussell/oh-my-zsh path:lib/git.zsh
 robbyrussell/oh-my-zsh path:plugins/git
 robbyrussell/oh-my-zsh path:plugins/tig
