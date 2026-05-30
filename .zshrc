@@ -65,8 +65,8 @@ __wezterm_set_user_var() {
 # --- End user additions ---
 
 # Preferred editor for local and remote sessions
-export EDITOR='nvim'
-export VISUAL='nvim'
+export EDITOR='vim'
+export VISUAL='vim'
 
 # screen
 export SCREENDIR=$HOME/.screen
